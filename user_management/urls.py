@@ -3,7 +3,10 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .swagger import schema_view
 from accounts.views import CustomTokenObtainPairView
+from django.views.generic import RedirectView
+
 urlpatterns = [
+     path('', RedirectView.as_view(url='/swagger/', permanent=False)),
     # Admin interface
     path('admin/', admin.site.urls),
     

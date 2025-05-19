@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from decouple import config # type: ignore
 from decouple import config as env
 
-
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
