@@ -31,11 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n(p+yjn-7*sktodmmj3v9e6iw^x5c6#*2i)!)o*ty-(81%z6wc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'd04f-160-119-149-222.ngrok-free.app']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'd04f-160-119-149-222.ngrok-free.app']
+ALLOWED_HOSTS = ['*'] # you have to update this later
 
-CSRF_TRUSTED_ORIGINS = ['https://d04f-160-119-149-222.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['https://d04f-160-119-149-222.ngrok-free.app']
 
 
 # Application definition
@@ -79,7 +80,11 @@ MIDDLEWARE = [
 # CORS settings to allow frontend
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vue frontend
+    "https://agrismart-gamma.vercel.app"
 ]
+
+CORS_ALLOW_ALL_ORIGINS = False
+
 
 ROOT_URLCONF = 'user_management.urls'
 
@@ -188,6 +193,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -212,19 +218,14 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 # Frontend URL for password reset links
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
-
-# Email Configuration
-# Option 1: Console Backend (for development, prints emails to console)
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#option 2 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL =  env('EMAIL_HOST_USER')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+FRONTEND_URL = config('FRONTEND_URL', default='https://agrismart-gamma.vercel.app')
 
 
 
